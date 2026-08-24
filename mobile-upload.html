@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kodak Moment Upload</title>
+  <style>
+    :root{--yellow:#FFB700;--red:#ED0000;--dark:#171717;--cream:#faf7f0}*{box-sizing:border-box}body{margin:0;background:var(--yellow);font-family:Arial,sans-serif;color:var(--dark);min-height:100vh;display:grid;place-items:center;padding:24px}.card{width:min(100%,440px);background:var(--dark);color:var(--cream);padding:28px;border-top:8px solid var(--red)}.logo{display:block;width:96px;height:auto;margin-bottom:24px}h1{font-size:30px;margin:0 0 10px}p{color:#bbb;line-height:1.5;margin:0 0 24px}input{display:block;width:100%;background:#292929;padding:18px;color:#fff;margin-bottom:14px;border:1px solid #555}button{width:100%;padding:18px;border:0;background:var(--red);color:#fff;font-size:18px;font-weight:700}button:disabled{opacity:.45}.status{margin-top:18px;color:var(--yellow);font-weight:700;line-height:1.5}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <img class="logo" src="./assets/brand/kodak-logo.png" alt="Kodak">
+    <h1>사진을 선택하세요</h1>
+    <p>선택한 사진은 현재 연결된 KODAK AI FILM LAB 태블릿으로 전송됩니다.</p>
+    <input id="photo" type="file" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
+    <button id="send" disabled>태블릿으로 전송</button>
+    <div class="status" id="status">사진을 선택해 주세요.</div>
+  </main>
+  <script>
+    const session=new URLSearchParams(location.search).get('session');
+    const photo=document.getElementById('photo');const send=document.getElementById('send');const status=document.getElementById('status');
+    if(!session){status.textContent='유효하지 않은 QR 코드입니다.';photo.disabled=true;}
+    photo.onchange=()=>{send.disabled=!photo.files.length;status.textContent=photo.files.length?'사진이 준비되었습니다.':'사진을 선택해 주세요.'};
+    send.onclick=async()=>{const file=photo.files[0];if(!file)return;send.disabled=true;status.textContent='사진을 전송하고 있습니다...';try{const response=await fetch(`/api/mobile-upload?session=${encodeURIComponent(session)}`,{method:'POST',headers:{'Content-Type':file.type||'image/jpeg','X-File-Name':encodeURIComponent(file.name)},body:file});if(!response.ok)throw new Error();status.textContent='전송 완료! 태블릿에서 다음 버튼을 눌러주세요.';}catch(_){status.textContent='전송하지 못했습니다. 같은 링크에서 다시 시도해 주세요.';send.disabled=false;}};
+  </script>
+</body>
+</html>
