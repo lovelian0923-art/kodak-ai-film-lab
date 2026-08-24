@@ -978,3 +978,23 @@ function restart() {
     }
   }
 })();
+
+// ===== KIOSK VIEWPORT =====
+// Keep one predictable 16:10 layout on the target tablet and scale that
+// complete stage on laptops instead of reflowing individual components.
+(function initializeKioskViewport() {
+  const DESIGN_WIDTH = 1280;
+  const DESIGN_HEIGHT = 800;
+
+  function fitKioskStage() {
+    const scale = Math.min(
+      window.innerWidth / DESIGN_WIDTH,
+      window.innerHeight / DESIGN_HEIGHT
+    );
+    document.documentElement.style.setProperty('--kiosk-scale', String(scale));
+  }
+
+  fitKioskStage();
+  window.addEventListener('resize', fitKioskStage, { passive: true });
+  window.addEventListener('orientationchange', fitKioskStage, { passive: true });
+})();
