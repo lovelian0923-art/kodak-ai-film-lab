@@ -542,7 +542,7 @@ function removeFallbackNotices() {
 const OUTPUT_INFO = {
   tshirt:  { name: '커스텀 티셔츠', unitPrice: 29000, type: 'apparel', label: 'WEAR THE MOMENT' },
   hoodie:  { name: '커스텀 후드티', unitPrice: 49000, type: 'apparel', label: 'WEAR THE MOMENT — HOODIE' },
-  tumbler: { name: 'KODAK 텀블러', unitPrice: 19000, type: 'tumbler', label: 'CARRY THE MOMENT' }
+  tumbler: { name: 'COLLAB TUMBLER', unitPrice: 19000, type: 'tumbler', label: 'CARRY THE MOMENT' }
 };
 
 const TUMBLER_VARIANTS = {
@@ -749,7 +749,7 @@ function updatePrintPreview() {
 
   if (output.type === 'tumbler') {
     kickerEl.textContent = 'KODAK COLLAB GOODS';
-    titleEl.innerHTML = '텀블러 <em>제품 선택</em>';
+    titleEl.innerHTML = '콜라보 텀블러 <em>제품 선택</em>';
     subEl.textContent = '사진 커스텀 없이 콜라보 텀블러 3종 중 하나를 선택하세요.';
   } else {
     kickerEl.textContent = '오늘을 입을 수 있게 만들다';
@@ -765,7 +765,7 @@ function updatePrintPreview() {
 
   if (output.type === 'tumbler') {
     // Ready-made tumbler: select one of three finished products.
-    colorKicker.textContent = '텀블러 제품 선택';
+    colorKicker.textContent = '콜라보 텀블러 선택';
     colorKicker.style.display = '';
     colorSelector.style.display = '';
     colorSelector.classList.add('tumbler-mode');
