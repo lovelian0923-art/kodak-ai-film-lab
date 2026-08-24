@@ -1378,6 +1378,7 @@ body {
 .color-swatch.cream { background: #eee5d5; }
 .color-swatch.yellow { background: var(--kodak-yellow); }
 .color-swatch.black { background: #1a1a1a; }
+.color-swatch.red { background: #e5261c; }
 .color-selector.tumbler-mode { gap:10px; }
 .color-selector.tumbler-mode .color-swatch {
   position:relative;
@@ -1400,6 +1401,13 @@ body {
 .color-selector.tumbler-mode .color-swatch.cream::after { content:'RED'; }
 .color-selector.tumbler-mode .color-swatch.yellow::after { content:'YELLOW'; }
 .color-selector.tumbler-mode .color-swatch.black::after { content:'SPLIT'; }
+.color-selector.tumbler-mode .color-swatch.red { display:none; }
+
+.asset-product-mockup[data-color="red"] {
+  --fabric-base:#e5261c;
+  --fabric-highlight:#f24b42;
+  --fabric-shadow:#a91410;
+}
 
 .size-selector {
   display: flex;

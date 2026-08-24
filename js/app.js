@@ -366,7 +366,7 @@ async function pollMobileUpload() {
     if (!data.ready || !data.path) return;
     clearInterval(mobileUploadRuntime.pollTimer);
     mobileUploadRuntime.pollTimer = null;
-    state.photoPath = `${API_BASE}${data.path}`;
+    state.photoPath = /^https?:\/\//i.test(data.path) ? data.path : `${API_BASE}${data.path}`;
     state.photoSourceType = 'mobile';
     state.artworkVariants = [];
     state.selectedArtwork = null;
@@ -559,17 +559,20 @@ const PRODUCT_MOCKUP_CONFIG = {
       colorama: {
         cream: './assets/mockups/lineup/tshirt-colorama-cream.png',
         yellow: './assets/mockups/lineup/tshirt-colorama-yellow.png',
-        black: './assets/mockups/lineup/tshirt-colorama-black.png'
+        black: './assets/mockups/lineup/tshirt-colorama-black.png',
+        red: './assets/mockups/lineup/tshirt-colorama-red.png'
       },
       portra: {
         cream: './assets/mockups/lineup/tshirt-portra-cream.png',
         yellow: './assets/mockups/lineup/tshirt-portra-yellow.png',
-        black: './assets/mockups/lineup/tshirt-portra-black.png'
+        black: './assets/mockups/lineup/tshirt-portra-black.png',
+        red: './assets/mockups/lineup/tshirt-portra-red.png'
       },
       archive: {
         cream: './assets/mockups/lineup/tshirt-archive-cream.png',
         yellow: './assets/mockups/lineup/tshirt-archive-yellow.png',
-        black: './assets/mockups/lineup/tshirt-archive-black.png'
+        black: './assets/mockups/lineup/tshirt-archive-black.png',
+        red: './assets/mockups/lineup/tshirt-archive-red.png'
       }
     },
     safeArea: { x: 39, y: 28, width: 22, height: 34 },
@@ -584,17 +587,20 @@ const PRODUCT_MOCKUP_CONFIG = {
       colorama: {
         cream: './assets/mockups/lineup/hoodie-colorama-cream.png',
         yellow: './assets/mockups/lineup/hoodie-colorama-yellow.png',
-        black: './assets/mockups/lineup/hoodie-colorama-black.png'
+        black: './assets/mockups/lineup/hoodie-colorama-black.png',
+        red: './assets/mockups/lineup/hoodie-colorama-red.png'
       },
       portra: {
         cream: './assets/mockups/lineup/hoodie-portra-cream.png',
         yellow: './assets/mockups/lineup/hoodie-portra-yellow.png',
-        black: './assets/mockups/lineup/hoodie-portra-black.png'
+        black: './assets/mockups/lineup/hoodie-portra-black.png',
+        red: './assets/mockups/lineup/hoodie-portra-red.png'
       },
       archive: {
         cream: './assets/mockups/lineup/hoodie-archive-cream.png',
         yellow: './assets/mockups/lineup/hoodie-archive-yellow.png',
-        black: './assets/mockups/lineup/hoodie-archive-black.png'
+        black: './assets/mockups/lineup/hoodie-archive-black.png',
+        red: './assets/mockups/lineup/hoodie-archive-red.png'
       }
     },
     safeArea: { x: 40, y: 32, width: 20, height: 29 },
@@ -661,7 +667,7 @@ function apparelSvg(product, color) {
 
 function buildApparelMockup(mockup, product, color) {
   const config = PRODUCT_MOCKUP_CONFIG[product];
-  const safeColor = ['cream', 'yellow', 'black'].includes(color) ? color : 'cream';
+  const safeColor = ['cream', 'yellow', 'black', 'red'].includes(color) ? color : 'cream';
   const family = getMockupFamily();
   const assetPath = (config.assets[family] || config.assets.portra)[safeColor];
   const area = config.safeArea;
@@ -987,14 +993,18 @@ function restart() {
   const DESIGN_HEIGHT = 800;
 
   function fitKioskStage() {
+    const viewportWidth = window.visualViewport?.width || window.innerWidth;
+    const viewportHeight = window.visualViewport?.height || window.innerHeight;
     const scale = Math.min(
-      window.innerWidth / DESIGN_WIDTH,
-      window.innerHeight / DESIGN_HEIGHT
+      1,
+      viewportWidth / DESIGN_WIDTH,
+      viewportHeight / DESIGN_HEIGHT
     );
     document.documentElement.style.setProperty('--kiosk-scale', String(scale));
   }
 
   fitKioskStage();
   window.addEventListener('resize', fitKioskStage, { passive: true });
+  window.visualViewport?.addEventListener('resize', fitKioskStage, { passive: true });
   window.addEventListener('orientationchange', fitKioskStage, { passive: true });
 })();

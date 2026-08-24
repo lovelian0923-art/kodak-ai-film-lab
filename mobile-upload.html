@@ -22,7 +22,27 @@
     const photo=document.getElementById('photo');const send=document.getElementById('send');const status=document.getElementById('status');
     if(!session){status.textContent='유효하지 않은 QR 코드입니다.';photo.disabled=true;}
     photo.onchange=()=>{send.disabled=!photo.files.length;status.textContent=photo.files.length?'사진이 준비되었습니다.':'사진을 선택해 주세요.'};
-    send.onclick=async()=>{const file=photo.files[0];if(!file)return;send.disabled=true;status.textContent='사진을 전송하고 있습니다...';try{const response=await fetch(`/api/mobile-upload?session=${encodeURIComponent(session)}`,{method:'POST',headers:{'Content-Type':file.type||'image/jpeg','X-File-Name':encodeURIComponent(file.name)},body:file});if(!response.ok)throw new Error();status.textContent='전송 완료! 태블릿에서 다음 버튼을 눌러주세요.';}catch(_){status.textContent='전송하지 못했습니다. 같은 링크에서 다시 시도해 주세요.';send.disabled=false;}};
+    async function loadPhoto(file){
+      if('createImageBitmap' in window)return createImageBitmap(file);
+      const url=URL.createObjectURL(file);
+      const image=new Image();
+      try{
+        await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=reject;image.src=url;});
+        return image;
+      }finally{URL.revokeObjectURL(url);}
+    }
+    async function optimizePhoto(file){
+      const image=await loadPhoto(file);
+      const maxSide=1600;
+      const ratio=Math.min(1,maxSide/Math.max(image.width,image.height));
+      const canvas=document.createElement('canvas');
+      canvas.width=Math.max(1,Math.round(image.width*ratio));
+      canvas.height=Math.max(1,Math.round(image.height*ratio));
+      canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
+      image.close?.();
+      return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('image conversion failed')),'image/jpeg',.84));
+    }
+    send.onclick=async()=>{const file=photo.files[0];if(!file)return;send.disabled=true;status.textContent='사진을 전송하고 있습니다...';try{const body=await optimizePhoto(file);const response=await fetch(`/api/mobile-upload?session=${encodeURIComponent(session)}`,{method:'POST',headers:{'Content-Type':'image/jpeg','X-File-Name':encodeURIComponent(file.name)},body});if(!response.ok)throw new Error();status.textContent='전송 완료! 태블릿에서 다음 버튼을 눌러주세요.';}catch(_){status.textContent='전송하지 못했습니다. JPG, PNG 또는 WEBP 사진으로 다시 시도해 주세요.';send.disabled=false;}};
   </script>
 </body>
 </html>
