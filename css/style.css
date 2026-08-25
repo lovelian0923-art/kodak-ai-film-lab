@@ -185,8 +185,8 @@ body {
   margin:0;
   color:var(--dark);
   max-width:980px;
-  font:800 clamp(50px, 5.7vw, 82px)/1.04 'Bricolage Grotesque', 'Noto Sans KR', sans-serif;
-  letter-spacing:-3px;
+  font:800 clamp(50px, 5.7vw, 82px)/1.18 'Bricolage Grotesque', 'Noto Sans KR', sans-serif;
+  letter-spacing:-1.5px;
 }
 .welcome-title em { color:var(--kodak-red); font-style:normal; }
 .welcome-copy {
