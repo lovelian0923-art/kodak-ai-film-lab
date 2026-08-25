@@ -791,11 +791,14 @@ function updatePrintPreview() {
     sizeValue = '500ML';
   }
 
+  // Show the frame name the customer actually picked on the DESIGN screen
+  // (STYLES matches the style-card labels) rather than the artwork's own title.
+  const frameName = (STYLES[state.style] && STYLES[state.style].name) || selectedVariant.metadata.title;
   const summary = [
     ['PRODUCT', output.name],
     ['COLOR', colorValue],
     ['SIZE', sizeValue],
-    ['STYLE', output.type === 'tumbler' ? 'COLLAB EDITION' : selectedVariant.metadata.title],
+    ['STYLE', output.type === 'tumbler' ? 'COLLAB EDITION' : frameName],
     ['QTY', String(state.quantity)]
   ];
   const totalPrice = output.unitPrice * state.quantity;
