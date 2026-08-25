@@ -850,9 +850,13 @@ document.querySelectorAll('.deliver-card').forEach(card => {
     state.deliver = card.dataset.deliver;
 
     if (state.deliver === 'deliver') {
-      document.getElementById('dhl-form-wrap').style.display = 'block';
+      const formWrap = document.getElementById('dhl-form-wrap');
+      formWrap.style.display = 'block';
       // Require form fields
       checkDeliverNext();
+      // On the fixed kiosk viewport the form sits below the fold, so bring it
+      // into view once its layout is applied — no visual redesign needed.
+      requestAnimationFrame(() => formWrap.scrollIntoView({ behavior: 'smooth', block: 'start' }));
     } else {
       document.getElementById('dhl-form-wrap').style.display = 'none';
       document.getElementById('deliver-next').disabled = false;
