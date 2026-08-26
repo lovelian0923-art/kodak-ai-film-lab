@@ -1499,6 +1499,7 @@ body {
 }
 .deliver-card[data-deliver="take"] .deliver-icon { font-size:94px; }
 .deliver-card[data-deliver="deliver"] .deliver-icon { font-size:82px; }
+.deliver-icon svg { width:96px; height:96px; color:var(--kodak-yellow); }
 .deliver-name {
   font-family: 'Bricolage Grotesque', sans-serif;
   font-size: 32px;
