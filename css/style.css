@@ -204,15 +204,6 @@ body {
   box-shadow:8px 8px 0 var(--dark);
 }
 .welcome-start:hover { box-shadow:5px 5px 0 var(--dark); }
-.welcome-meta {
-  position:absolute;
-  z-index:1;
-  right:clamp(72px, 9vw, 150px);
-  bottom:22px;
-  color:rgba(26,26,26,.65);
-  font:700 10px 'Bricolage Grotesque', sans-serif;
-  letter-spacing:2px;
-}
 
 /* ===== Header Bar ===== */
 .top-bar {
@@ -1892,7 +1883,6 @@ html, body { background:var(--film-black); color:var(--film-paper); }
 .welcome-title { color:var(--film-paper); text-shadow:0 4px 22px rgba(0,0,0,.45); }
 .welcome-title em { color:var(--kodak-yellow); }
 .welcome-copy { color:var(--film-muted); }
-.welcome-meta { color:var(--film-muted); }
 .welcome-start { box-shadow:7px 7px 0 #050505; }
 .welcome-film-conveyor { opacity:.52; height:178px; bottom:30px; }
 .welcome-film-track { height:178px; background-color:#050505; }
