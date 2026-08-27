@@ -2676,3 +2676,14 @@ html, body { background:var(--film-black); color:var(--film-paper); }
 }
 .product-apparel .artwork--print.artwork--archive .artwork-shipping-code { font-size:2.2px; }
 .product-apparel .artwork--print.artwork--archive .artwork-shipping-meta { font-size:1.8px; }
+
+/* ===== PRINT: T-shirt mockup containment hardening (scoped, additive) ===== */
+/* Keeps the mockup fully inside the fixed 1280×800 stage and its card on every
+   OS / DPI / 16:10 tablet landscape. Purely defensive — no change to the
+   current visual design at the target viewports. Print screen only. */
+#screen-print .tshirt-preview { min-height: 0; flex-wrap: nowrap; }
+#screen-print .tshirt-mockup {
+  flex: 0 0 auto;        /* never collapse the mockup column -> no horizontal spill */
+  max-width: 100%;
+}
+#screen-print .tshirt-preview > div { min-width: 0; }  /* order-summary column shrinks cleanly */

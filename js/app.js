@@ -1002,11 +1002,15 @@ function restart() {
   function fitKioskStage() {
     const viewportWidth = window.visualViewport?.width || window.innerWidth;
     const viewportHeight = window.visualViewport?.height || window.innerHeight;
-    const scale = Math.min(
+    const rawScale = Math.min(
       1,
       viewportWidth / DESIGN_WIDTH,
       viewportHeight / DESIGN_HEIGHT
     );
+    // Guard against transient 0 / NaN viewport reports (Windows DPI scaling,
+    // tab restore, pre-layout load) that would otherwise collapse the whole
+    // stage to scale(0). Keeps the existing scaling structure intact.
+    const scale = Number.isFinite(rawScale) && rawScale > 0 ? rawScale : 1;
     document.documentElement.style.setProperty('--kiosk-scale', String(scale));
   }
 
